@@ -1,0 +1,33 @@
+name: CI/CD Pipeline
+
+# Ejecutar el flujo de trabajo en eventos específicos
+on:
+  push:              # Se ejecuta cuando haces un push
+    branches: 
+      - main         # Solo en la rama principal
+      - development  # Y en la rama de desarrollo
+  pull_request:      # También en pull requests
+
+# Definir los trabajos a realizar
+jobs:
+  test:
+    runs-on: ubuntu-latest  # Ejecuta el trabajo en un entorno Linux
+
+    steps:
+      # Configurar el repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Configurar Node.js para ejecutar las pruebas
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Instalar dependencias del proyecto
+      - name: Install dependencies
+        run: npm install
+
+      # Ejecutar pruebas unitarias
+      - name: Run unit tests
+        run: npm test
